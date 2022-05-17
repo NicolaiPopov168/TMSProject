@@ -13,8 +13,8 @@ data class NoteItem(
     @ColumnInfo(name = "title")
     val title: String,
 
-    @ColumnInfo(name = "context")
-    val context: String,
+    @ColumnInfo(name = "content")
+    val content: String,
 
     @ColumnInfo(name = "time")
     val time: String,
