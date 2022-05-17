@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import com.example.tmsproject.R
 import com.example.tmsproject.databinding.ActivityMainBinding
+import com.example.tmsproject.fragments.FragmentManager
+import com.example.tmsproject.fragments.NoteFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,13 +26,13 @@ class MainActivity : AppCompatActivity() {
                     Log.d("MyLog", "Settings")
                 }
                 R.id.notes -> {
-                    Log.d("MyLog", "Notes")
+                   FragmentManager.serFragment(NoteFragment.newInstance(), this)
                 }
                 R.id.shop_list -> {
                     Log.d("MyLog", "List")
                 }
                 R.id.new_item -> {
-                    Log.d("MyLog", "New")
+                    FragmentManager.currentFrag?.onClickNew()
                 }
             }
             true
