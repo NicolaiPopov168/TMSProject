@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import com.example.tmsproject.R
 import com.example.tmsproject.databinding.ActivityMainBinding
+import com.example.tmsproject.dialogs.NewListDialog
 import com.example.tmsproject.fragments.FragmentManager
 import com.example.tmsproject.fragments.NoteFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NewListDialog.Listener {
 
     lateinit var binding: ActivityMainBinding
 
@@ -26,16 +27,21 @@ class MainActivity : AppCompatActivity() {
                     Log.d("MyLog", "Settings")
                 }
                 R.id.notes -> {
-                   FragmentManager.serFragment(NoteFragment.newInstance(), this)
+                    FragmentManager.serFragment(NoteFragment.newInstance(), this)
                 }
                 R.id.shop_list -> {
                     Log.d("MyLog", "List")
                 }
                 R.id.new_item -> {
-                    FragmentManager.currentFrag?.onClickNew()
+                    //FragmentManager.currentFrag?.onClickNew()
+                    NewListDialog.showDialog(this, this)
                 }
             }
             true
         }
+    }
+
+    override fun onCLick(name: String) {
+        Log.d("MyLog", "Name: $name")
     }
 }
