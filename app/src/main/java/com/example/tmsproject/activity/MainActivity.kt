@@ -8,6 +8,7 @@ import com.example.tmsproject.databinding.ActivityMainBinding
 import com.example.tmsproject.dialogs.NewListDialog
 import com.example.tmsproject.fragments.FragmentManager
 import com.example.tmsproject.fragments.NoteFragment
+import com.example.tmsproject.fragments.ShopListNamesFragment
 
 class MainActivity : AppCompatActivity(), NewListDialog.Listener {
 
@@ -16,8 +17,9 @@ class MainActivity : AppCompatActivity(), NewListDialog.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setBottomNavListener()
         setContentView(binding.root)
+        FragmentManager.serFragment(ShopListNamesFragment.newInstance(), this)
+        setBottomNavListener()
     }
 
     private fun setBottomNavListener() {
@@ -30,11 +32,11 @@ class MainActivity : AppCompatActivity(), NewListDialog.Listener {
                     FragmentManager.serFragment(NoteFragment.newInstance(), this)
                 }
                 R.id.shop_list -> {
-                    Log.d("MyLog", "List")
+                    FragmentManager.serFragment(ShopListNamesFragment.newInstance(), this)
                 }
                 R.id.new_item -> {
-                    //FragmentManager.currentFrag?.onClickNew()
-                    NewListDialog.showDialog(this, this)
+                    FragmentManager.currentFrag?.onClickNew()
+
                 }
             }
             true
