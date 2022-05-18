@@ -14,6 +14,14 @@ class MainViewModel(dataBase: MainDataBase): ViewModel() {
         dao.insertNote(note)
     }
 
+    fun updateNote(note: NoteItem) = viewModelScope.launch {
+        dao.updateNote(note)
+    }
+
+    fun deleteNote(id: Int) = viewModelScope.launch {
+        dao.deleteNote(id)
+    }
+
     class MainViewModelFactory(val dataBase: MainDataBase): ViewModelProvider.Factory{
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

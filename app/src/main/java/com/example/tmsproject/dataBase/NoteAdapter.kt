@@ -9,25 +9,33 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tmsproject.R
 import com.example.tmsproject.databinding.NoteListItemBinding
 import com.example.tmsproject.entities.NoteItem
+import com.example.tmsproject.utils.HtmlManager
 
-class NoteAdapter : ListAdapter<NoteItem, NoteAdapter.ItemHolder>(ItemComparator()) {
+class NoteAdapter(private val listener: Listener) :
+    ListAdapter<NoteItem, NoteAdapter.ItemHolder>(ItemComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         return ItemHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-        holder.setData(getItem(position))
+        holder.setData(getItem(position), listener)
     }
 
     class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val binding = NoteListItemBinding.bind(view)
 
-        fun setData(note: NoteItem) = with(binding) {
+        fun setData(note: NoteItem, listener: Listener) = with(binding) {
             tvTitle.text = note.title
-            tvDescription.text = note.content
+            tvDescription.text = HtmlManager.getFromHtml(note.content).trim()
             tvTime.text = note.time
+            itemView.setOnClickListener {
+                listener.onClickItem(note)
+            }
+            inDelete.setOnClickListener {
+                listener.deleteItem(note.id!!)
+            }
         }
 
         companion object {
@@ -50,6 +58,13 @@ class NoteAdapter : ListAdapter<NoteItem, NoteAdapter.ItemHolder>(ItemComparator
         override fun areContentsTheSame(oldItem: NoteItem, newItem: NoteItem): Boolean {
             return oldItem == newItem
         }
+    }
+
+    interface Listener {
+
+        fun deleteItem(id: Int)
+
+        fun onClickItem(note: NoteItem)
     }
 
 }
