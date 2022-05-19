@@ -7,12 +7,12 @@ import androidx.room.RoomDatabase
 import com.example.tmsproject.entities.LibraryItem
 import com.example.tmsproject.entities.NoteItem
 import com.example.tmsproject.entities.ShoppingListItem
-import com.example.tmsproject.entities.ShoppingListNames
+import com.example.tmsproject.entities.ShopListNameItem
 
 
 @Database(
     entities = [LibraryItem::class, NoteItem::class,
-        ShoppingListItem::class, ShoppingListNames::class], version = 1
+        ShoppingListItem::class, ShopListNameItem::class], version = 1
 )
 abstract class MainDataBase : RoomDatabase() {
 

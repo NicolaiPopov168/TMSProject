@@ -1,31 +1,46 @@
 package com.example.tmsproject.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tmsproject.activity.MainApp
+import com.example.tmsproject.activity.ShopListActivity
 import com.example.tmsproject.dataBase.MainViewModel
+import com.example.tmsproject.dataBase.ShopListNameAdapter
 import com.example.tmsproject.databinding.FragmentShopListNamesBinding
+import com.example.tmsproject.dialogs.DeleteDialog
 import com.example.tmsproject.dialogs.NewListDialog
+import com.example.tmsproject.entities.ShopListNameItem
+import com.example.tmsproject.utils.Time
 
-class ShopListNamesFragment : BaseFragment() {
+class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener {
 
     private lateinit var binding: FragmentShopListNamesBinding
+    private lateinit var adapter: ShopListNameAdapter
 
     private val mainViewModel: MainViewModel by activityViewModels {
         MainViewModel.MainViewModelFactory((context?.applicationContext as MainApp).database)
     }
 
     override fun onClickNew() {
-        NewListDialog.showDialog(activity as AppCompatActivity, object : NewListDialog.Listener{
+        NewListDialog.showDialog(activity as AppCompatActivity, object : NewListDialog.Listener {
             override fun onCLick(name: String) {
-                Log.d("MyLog", "Name: $name")
+                val shopListName = ShopListNameItem(
+                    null,
+                    name,
+                    Time.getCurrentTime(),
+                    0,
+                    0,
+                    ""
+                )
+                mainViewModel.insertShopListName(shopListName)
             }
-        })
+        }, "")
 
     }
 
@@ -48,12 +63,14 @@ class ShopListNamesFragment : BaseFragment() {
     }
 
     private fun initRcView() = with(binding) {
-
+        rcView.layoutManager = LinearLayoutManager(activity)
+        adapter = ShopListNameAdapter(this@ShopListNamesFragment)
+        rcView.adapter = adapter
     }
 
     private fun observer() {
-        mainViewModel.allNotes.observe(viewLifecycleOwner ) {
-
+        mainViewModel.allShopListNamesItem.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
         }
     }
 
@@ -61,5 +78,28 @@ class ShopListNamesFragment : BaseFragment() {
 
         @JvmStatic
         fun newInstance() = ShopListNamesFragment()
+    }
+
+    override fun deleteItem(id: Int) {
+        DeleteDialog.showDialog(context as AppCompatActivity, object : DeleteDialog.Listener {
+            override fun onCLick() {
+                mainViewModel.deleteShopListName(id)
+            }
+        })
+    }
+
+    override fun editItem(shopListName: ShopListNameItem) {
+        NewListDialog.showDialog(activity as AppCompatActivity, object : NewListDialog.Listener {
+            override fun onCLick(name: String) {
+                mainViewModel.updateListName(shopListName.copy(name = name))
+            }
+        }, shopListName.name)
+    }
+
+    override fun onClickItem(shopListName: ShopListNameItem) {
+        val i = Intent(activity, ShopListActivity::class.java).apply {
+            putExtra(ShopListActivity.SHOP_LIST_NAME, shopListName)
+        }
+        startActivity(i)
     }
 }

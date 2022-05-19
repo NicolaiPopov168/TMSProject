@@ -24,6 +24,7 @@ import com.example.tmsproject.entities.NoteItem
 import com.example.tmsproject.fragments.NoteFragment
 import com.example.tmsproject.utils.HtmlManager
 import com.example.tmsproject.utils.MyTouchListener
+import com.example.tmsproject.utils.Time.getCurrentTime
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -182,11 +183,6 @@ class NewNoteActivity : AppCompatActivity() {
             getCurrentTime(),
             ""
         )
-    }
-
-    private fun getCurrentTime(): String {
-        val formatter = SimpleDateFormat("hh:mm:ss - yyyy/MM/dd", Locale.getDefault())
-        return formatter.format(Calendar.getInstance().time)
     }
 
     private fun actionBarSettings() {
