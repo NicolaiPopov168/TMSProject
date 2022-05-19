@@ -2,6 +2,7 @@ package com.example.tmsproject.dataBase
 
 import androidx.lifecycle.*
 import com.example.tmsproject.entities.NoteItem
+import com.example.tmsproject.entities.ShopListItem
 import com.example.tmsproject.entities.ShopListNameItem
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
@@ -18,6 +19,10 @@ class MainViewModel(dataBase: MainDataBase): ViewModel() {
 
     fun insertShopListName(listName: ShopListNameItem) = viewModelScope.launch {
         dao.insertShopListName(listName)
+    }
+
+    fun insertShopItem(shopListItem: ShopListItem) = viewModelScope.launch {
+        dao.insertItem(shopListItem)
     }
 
     fun updateNote(note: NoteItem) = viewModelScope.launch {

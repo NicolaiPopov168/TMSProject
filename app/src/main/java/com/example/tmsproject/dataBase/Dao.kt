@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.tmsproject.entities.ShopListNameItem
+import com.example.tmsproject.entities.ShopListItem
 import kotlinx.coroutines.flow.Flow
 import com.example.tmsproject.entities.NoteItem as NoteItem
 
@@ -27,7 +28,10 @@ interface Dao {
     suspend fun insertNote(note: NoteItem)
 
     @Insert
-    suspend fun insertShopListName(name: ShopListNameItem)
+    suspend fun insertItem(note: ShopListItem)
+
+    @Insert
+    suspend fun insertShopListName(shopListNameItem: ShopListNameItem)
 
     @Update
     suspend fun updateNote(note: NoteItem)
